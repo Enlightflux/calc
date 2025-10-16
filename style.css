@@ -13,6 +13,7 @@ body {
 	);
 
 	height: 100vh; /* Full viewport height */
+	min-width: 370px;
 }
 
 .bg {
