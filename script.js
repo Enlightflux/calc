@@ -1,8 +1,9 @@
 const displayScreen = document.querySelector('.display');
 
-let firstDigit = 1;
-let secondDigit = 4;
+let firstDigit = '';
+let secondDigit = '';
 let operator = '';
+let currentInput = '';
 // Number Variables
 const one = document.querySelector('.one');
 const two = document.querySelector('.two');
@@ -25,70 +26,165 @@ const equalTo = document.querySelector('.equalTo');
 const del = document.querySelector('.del');
 
 // Event Listeners
+// for digits
 
-// one.addEventListener('click', function () {
-// 	displayScreen.textContent = 1;
-// 	firstDigit = 1;
-// });
+one.addEventListener('click', () => {
+	currentInput += 1;
+	displayScreen.textContent = currentInput;
+});
 
-// two.addEventListener('click', function () {
-// 	displayScreen.textContent = 2;
-// 	firstDigit = 2;
-// });
-// three.addEventListener('click', function () {
-// 	displayScreen.textContent = 3;
-// 	firstDigit = 3;
-// });
-// four.addEventListener('click', function () {
-// 	displayScreen.textContent = 4;
-// 	firstDigit = 4;
-// });
-// five.addEventListener('click', function () {
-// 	displayScreen.textContent = 5;
-// 	firstDigit = 5;
-// });
-// six.addEventListener('click', function () {
-// 	displayScreen.textContent = 6;
-// 	firstDigit = 6;
-// });
-// seven.addEventListener('click', function () {
-// 	displayScreen.textContent = 7;
-// 	firstDigit = 7;
-// });
-// eight.addEventListener('click', function () {
-// 	displayScreen.textContent = 8;
-// 	firstDigit = 8;
-// });
-// nine.addEventListener('click', function () {
-// 	displayScreen.textContent = 9;
-// 	firstDigit = 9;
-// });
-// zero.addEventListener('click', function () {
-// 	displayScreen.textContent = 0;
-// 	firstDigit = 0;
-// });
-// decimal.addEventListener('click', function () {
-// 	displayScreen.textContent = '.';
-// 	firstDigit = '.';
-// });
+two.addEventListener('click', () => {
+	currentInput += 2;
+	displayScreen.textContent = currentInput;
+});
+three.addEventListener('click', () => {
+	currentInput += 3;
+	displayScreen.textContent = currentInput;
+});
+four.addEventListener('click', () => {
+	currentInput += 4;
+	displayScreen.textContent = currentInput;
+});
+five.addEventListener('click', () => {
+	currentInput += 5;
+	displayScreen.textContent = currentInput;
+});
+six.addEventListener('click', () => {
+	currentInput += 6;
+	displayScreen.textContent = currentInput;
+});
+seven.addEventListener('click', () => {
+	currentInput += 7;
+	displayScreen.textContent = currentInput;
+});
+eight.addEventListener('click', () => {
+	currentInput += 8;
+	displayScreen.textContent = currentInput;
+});
+nine.addEventListener('click', () => {
+	currentInput += 9;
+	displayScreen.textContent = currentInput;
+});
+zero.addEventListener('click', () => {
+	currentInput += 0;
+	displayScreen.textContent = currentInput;
+});
+decimal.addEventListener('click', () => {
+	currentInput += '.';
+	displayScreen.textContent = currentInput;
+});
 
 // // operators
-// divide.addEventListener('click', function () {
-// 	displayScreen.textContent = '/';
-// });
-// multiply.addEventListener('click', function () {
-// 	displayScreen.textContent = '*';
-// });
-// minus.addEventListener('click', function () {
-// 	displayScreen.textContent = '-';
-// });
-// plus.addEventListener('click', function () {
-// 	displayScreen.textContent = '+';
-// });
+divide.addEventListener('click', function () {
+	displayScreen.textContent = '/';
+	operator = 'toDivide';
 
-function toAdd() {
-	const value = firstDigit + secondDigit;
+	if (firstDigit === '') {
+		firstDigit = parseFloat(currentInput);
+	}
+	currentInput = '';
+});
+multiply.addEventListener('click', function () {
+	displayScreen.textContent = '*';
+	operator = 'toMultiply';
+
+	if (firstDigit === '') {
+		firstDigit = parseFloat(currentInput);
+	}
+	currentInput = '';
+});
+minus.addEventListener('click', function () {
+	displayScreen.textContent = '-';
+	operator = 'toMinus';
+
+	if (firstDigit === '') {
+		firstDigit = parseFloat(currentInput);
+	}
+	currentInput = '';
+});
+plus.addEventListener('click', function () {
+	displayScreen.textContent = '+';
+	operator = 'toPlus';
+
+	if (firstDigit === '') {
+		firstDigit = parseFloat(currentInput);
+	}
+	currentInput = '';
+	console.log('working');
+});
+
+del.addEventListener('click', toClearAll);
+
+equalTo.addEventListener('click', toCalculate);
+
+// Functions
+// for Operation
+
+function toDivide() {
+	const valueOriginal = firstDigit / secondDigit;
+	const value = parseFloat(valueOriginal.toFixed(2));
 	displayScreen.textContent = value;
 }
 
-equalTo.addEventListener('click', toAdd);
+function toMultiply() {
+	const valueOriginal = firstDigit * secondDigit;
+	const value = parseFloat(valueOriginal.toFixed(2));
+	displayScreen.textContent = value;
+}
+
+function toMinus() {
+	const valueOriginal = firstDigit - secondDigit;
+	const value = parseFloat(valueOriginal.toFixed(2));
+	displayScreen.textContent = value;
+}
+
+function toPlus() {
+	const number1 = Number(firstDigit);
+	const number2 = Number(secondDigit);
+	const valueOriginal = number1 + number2;
+	const value = parseFloat(valueOriginal.toFixed(2));
+	displayScreen.textContent = value;
+}
+
+function ifEmpty() {
+	const defaultText = 'Hey! Watchout!';
+	displayScreen.textContent = defaultText;
+}
+
+// for Clear
+function toClearAll() {
+	firstDigit = '';
+	secondDigit = '';
+	operator = '';
+	currentInput = '';
+	displayScreen.textContent = '';
+}
+
+function toCalculate() {
+	let operatorValue = operator;
+	switch (operatorValue) {
+		case 'toDivide':
+			toDivide();
+			break;
+		case 'toMultiply':
+			toMultiply();
+			break;
+		case 'toMinus':
+			toMinus();
+			break;
+		case 'toPlus':
+			toPlus();
+			break;
+		default:
+			ifEmpty();
+			break;
+	}
+}
+
+equalTo.addEventListener('click', function () {
+	secondDigit = parseFloat(currentInput);
+	toCalculate();
+	currentInput = '';
+	firstDigit = '';
+	secondDigit = '';
+});
