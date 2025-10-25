@@ -73,6 +73,9 @@ zero.addEventListener("click", () => {
 decimal.addEventListener("click", () => {
   if (currentInput.includes(".")) {
     return;
+  } else if (currentInput === "") {
+    currentInput = "0." + currentInput;
+    displayScreen.textContent = currentInput;
   } else {
     currentInput += ".";
     displayScreen.textContent = currentInput;
@@ -81,45 +84,59 @@ decimal.addEventListener("click", () => {
 
 // // operators
 divide.addEventListener("click", function () {
-  displayScreen.textContent = "/";
+  if (currentInput !== "" && firstDigit !== "" && operator !== "") {
+    secondDigit = parseFloat(currentInput);
+    if (divideByZero()) return;
+    toCalculate();
+    firstDigit = result;
+  } else if (currentInput !== "" && firstDigit === "") {
+    firstDigit = parseFloat(currentInput);
+  }
   operator = "toDivide";
-
-  if (firstDigit === "") {
-    firstDigit = parseFloat(currentInput);
-  }
   currentInput = "";
+  displayScreen.textContent = firstDigit + "/";
 });
+
 multiply.addEventListener("click", function () {
-  displayScreen.textContent = "*";
+  if (currentInput !== "" && firstDigit !== "" && operator !== "") {
+    secondDigit = parseFloat(currentInput);
+    toCalculate();
+    firstDigit = result;
+  } else if (currentInput !== "" && firstDigit === "") {
+    firstDigit = parseFloat(currentInput);
+  }
   operator = "toMultiply";
-
-  if (firstDigit === "") {
-    firstDigit = parseFloat(currentInput);
-  }
   currentInput = "";
+  displayScreen.textContent = firstDigit + "*";
 });
+
 minus.addEventListener("click", function () {
-  displayScreen.textContent = "-";
+  if (currentInput !== "" && firstDigit !== "" && operator !== "") {
+    secondDigit = parseFloat(currentInput);
+    toCalculate();
+    firstDigit = result;
+  } else if (currentInput !== "" && firstDigit === "") {
+    firstDigit = parseFloat(currentInput);
+  }
   operator = "toMinus";
-
-  if (firstDigit === "") {
-    firstDigit = parseFloat(currentInput);
-  }
   currentInput = "";
+  displayScreen.textContent = firstDigit + "-";
 });
+
 plus.addEventListener("click", function () {
-  displayScreen.textContent = "+";
-  operator = "toPlus";
-
-  if (firstDigit === "") {
+  if (currentInput !== "" && firstDigit !== "" && operator !== "") {
+    secondDigit = parseFloat(currentInput);
+    toCalculate();
+    firstDigit = result;
+  } else if (currentInput !== "" && firstDigit === "") {
     firstDigit = parseFloat(currentInput);
   }
+  operator = "toPlus";
   currentInput = "";
+  displayScreen.textContent = firstDigit + "+";
 });
 
-del.addEventListener("click", toClearAll);
-
-equalTo.addEventListener("click", toCalculate);
+del.addEventListener("click", clearValue);
 
 // Functions
 // for Operation
@@ -128,18 +145,21 @@ function toDivide() {
   const valueOriginal = firstDigit / secondDigit;
   const value = parseFloat(valueOriginal.toFixed(2));
   displayScreen.textContent = value;
+  result = value;
 }
 
 function toMultiply() {
   const valueOriginal = firstDigit * secondDigit;
   const value = parseFloat(valueOriginal.toFixed(2));
   displayScreen.textContent = value;
+  result = value;
 }
 
 function toMinus() {
   const valueOriginal = firstDigit - secondDigit;
   const value = parseFloat(valueOriginal.toFixed(2));
   displayScreen.textContent = value;
+  result = value;
 }
 
 function toPlus() {
@@ -148,21 +168,13 @@ function toPlus() {
   const valueOriginal = number1 + number2;
   const value = parseFloat(valueOriginal.toFixed(2));
   displayScreen.textContent = value;
+  result = value;
 }
 
 function ifEmpty() {
   const value = (firstDigit = currentInput);
 
   displayScreen.textContent = value;
-}
-
-// for Clear
-function toClearAll() {
-  firstDigit = "";
-  secondDigit = "";
-  operator = "";
-  currentInput = "";
-  displayScreen.textContent = "";
 }
 
 function toCalculate() {
@@ -191,13 +203,17 @@ function clearValue() {
   firstDigit = "";
   secondDigit = "";
   operator = "";
+  displayScreen.textContent = "";
 }
 
 equalTo.addEventListener("click", function () {
   secondDigit = parseFloat(currentInput);
   if (divideByZero()) return;
   toCalculate();
-  clearValue();
+  currentInput = "";
+  firstDigit = result;
+  secondDigit = "";
+  operator = "";
 });
 
 function divideByZero() {
